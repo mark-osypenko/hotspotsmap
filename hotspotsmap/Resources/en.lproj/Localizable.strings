@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  hotspotsmap
+
+  Created by Osypenko Mark on 13.06.2022.
+  
+*/
+
+"loadings_status" = "Loading hotspots...";
+
+"general_error_title" = "Error";
+
+"failed_to_load_hotspots" = "Failed to load hotspots";
+
+"cancel" = "Cancel";
+
+"too_many_points_error" = "Too many points. Increase the search area.";
+
+"unknown_error" = "Oops, something went wrong";
