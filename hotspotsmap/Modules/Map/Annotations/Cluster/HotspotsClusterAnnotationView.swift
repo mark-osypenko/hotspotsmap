@@ -39,27 +39,29 @@ class HotspotsClusterAnnotationView: MKAnnotationView {
 private extension HotspotsClusterAnnotationView {
 
     enum Constants {
-        static let maxNumberOfMembers = 500
-        static let minSideDimension: CGFloat = 10
-        static let maxSideDimension: CGFloat = 100
+        static let maxNumberOfMembers = 600
+        static let minSideDimension: CGFloat = 30
+        static let maxSideDimension: CGFloat = 120
         static let numberOfTypes = 4
     }
 
     func setup(using clusterAnnotation: MKClusterAnnotation) {
         backgroundColor = .systemBlue
 
-        let step = Constants.maxNumberOfMembers / Constants.numberOfTypes
-        let sidesDiff = (Constants.maxSideDimension - Constants.minSideDimension) / CGFloat(Constants.numberOfTypes)
+        let step = Constants.maxNumberOfMembers / (Constants.numberOfTypes - 1)
+        let sidesDiff = (Constants.maxSideDimension - Constants.minSideDimension) / CGFloat(Constants.numberOfTypes - 1)
 
-        (0..<Constants.numberOfTypes).forEach {
-            guard $0 > 0 else {
-                return frame = .init(x: .zero, y: .zero, width: Constants.maxSideDimension, height:  Constants.maxSideDimension)
-            }
-            let toNumber = Constants.maxNumberOfMembers - $0 * step
-            let fromNumber = Constants.maxNumberOfMembers - ($0 + 1) * step
-            if (fromNumber..<toNumber).contains(clusterAnnotation.memberAnnotations.count) {
-                let sideSize = Constants.maxSideDimension - sidesDiff * CGFloat($0)
-                frame = .init(x: .zero, y: .zero, width: sideSize, height: sideSize)
+        if clusterAnnotation.memberAnnotations.count >= Constants.maxNumberOfMembers {
+            frame = .init(x: .zero, y: .zero, width: Constants.maxSideDimension, height: Constants.maxSideDimension)
+        } else {
+            (1..<Constants.numberOfTypes).forEach {
+                let fromNumber = Constants.maxNumberOfMembers - $0 * step
+                let toNumber = Constants.maxNumberOfMembers - ($0 - 1) * step
+
+                if (fromNumber..<toNumber).contains(clusterAnnotation.memberAnnotations.count) {
+                    let sideSize = Constants.maxSideDimension - sidesDiff * CGFloat($0)
+                    frame = .init(x: .zero, y: .zero, width: sideSize, height: sideSize)
+                }
             }
         }
 
